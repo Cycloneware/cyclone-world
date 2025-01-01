@@ -1,16 +1,15 @@
-// Import Firebase App and Auth modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-// Your Firebase configuration
+// Your Firebase config
 const firebaseConfig = {
-    apiKey: "AIzaSyCiz-65LelRGFWdgl8hHVNb5zzvkY2CGDA",
-    authDomain: "cyclone-world-e5120.firebaseapp.com",
-    projectId: "cyclone-world-e5120",
-    storageBucket: "cyclone-world-e5120.firebasestorage.app",
-    messagingSenderId: "671830912000",
-    appId: "1:671830912000:web:2b2ad2a9f17746f9e5fce5",
-    measurementId: "G-YPHXKY73MP"
+  apiKey: "AIzaSyCiz-65LelRGFWdgl8hHVNb5zzvkY2CGDA",
+  authDomain: "cyclone-world-e5120.firebaseapp.com",
+  projectId: "cyclone-world-e5120",
+  storageBucket: "cyclone-world-e5120.firebasestorage.app",
+  messagingSenderId: "671830912000",
+  appId: "1:671830912000:web:2b2ad2a9f17746f9e5fce5",
+  measurementId: "G-YPHXKY73MP"
 };
 
 // Initialize Firebase
@@ -19,25 +18,28 @@ const app = initializeApp(firebaseConfig);
 // Get the Firebase Auth instance
 const auth = getAuth(app);
 
-// Listen for auth state changes
+// Listen for auth state changes (user login/logout)
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log("User is signed in:", user.displayName);
-        // You can add logic here to handle the authenticated user, e.g., load the game
-    } else {
-        console.log("No user is signed in");
-        window.location.href = "index.html"; // Redirect to login if no user is signed in
-    }
+  if (user) {
+    // User is signed in, you can access the user's details here
+    console.log("User is signed in:", user);
+    // Update the UI with user information (example)
+    document.getElementById("username-display").textContent = user.displayName || user.email;
+  } else {
+    // No user is signed in, handle accordingly
+    console.log("No user is signed in");
+    window.location.href = "index.html"; // Redirect to login screen if not logged in
+  }
 });
 
 // Log out functionality
 const logoutButton = document.getElementById('logout-btn');
 logoutButton.addEventListener('click', () => {
-    signOut(auth).then(() => {
-        window.location.href = "index.html"; // Redirect to login page after logging out
-    }).catch((error) => {
-        console.error("Error logging out: ", error);
-    });
+  signOut(auth).then(() => {
+    window.location.href = "index.html"; // Redirect to login screen after logging out
+  }).catch((error) => {
+    console.error("Error logging out:", error);
+  });
 });
 
 // Game logic
