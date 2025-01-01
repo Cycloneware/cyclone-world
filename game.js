@@ -20,13 +20,18 @@ const auth = getAuth(app);
 
 // Listen for auth state changes (user login/logout)
 onAuthStateChanged(auth, (user) => {
+  const usernameDisplay = document.getElementById("username-display");
+
   if (user) {
-    // User is signed in, you can access the user's details here
+    // User is signed in
     console.log("User is signed in:", user);
-    // Update the UI with user information (example)
-    document.getElementById("username-display").textContent = user.displayName || user.email;
+    
+    // Ensure the element exists before trying to set textContent
+    if (usernameDisplay) {
+      usernameDisplay.textContent = user.displayName || user.email;
+    }
   } else {
-    // No user is signed in, handle accordingly
+    // No user is signed in
     console.log("No user is signed in");
     window.location.href = "index.html"; // Redirect to login screen if not logged in
   }
