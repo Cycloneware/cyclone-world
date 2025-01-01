@@ -1,4 +1,4 @@
-// Import Firebase configuration and initialize
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCiz-65LelRGFWdgl8hHVNb5zzvkY2CGDA",
     authDomain: "cyclone-world-e5120.firebaseapp.com",
@@ -11,44 +11,54 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+// Firebase Auth instance
 const auth = firebase.auth();
 
-// Switch between login and signup
-const loginScreen = document.getElementById('login-screen');
-const signupScreen = document.getElementById('signup-screen');
-document.getElementById('go-to-signup').addEventListener('click', () => {
-    loginScreen.style.display = 'none';
-    signupScreen.style.display = 'block';
-});
-document.getElementById('go-to-login').addEventListener('click', () => {
-    signupScreen.style.display = 'none';
-    loginScreen.style.display = 'block';
-});
-
-// Handle login
-document.getElementById('login-form').addEventListener('submit', (e) => {
+// Login functionality
+const loginForm = document.getElementById('login-form');
+loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
-    auth.signInWithEmailAndPassword(username + '@cycloneworld.com', password)
+    auth.signInWithEmailAndPassword(username + "@cycloneworld.com", password)
         .then(() => {
-            alert('Logged in successfully!');
-            // Redirect to game or dashboard
+            alert("Login successful!");
+            window.location.href = "server-selection.html"; // Redirect to server selection page
         })
-        .catch((error) => alert(`Error: ${error.message}`));
+        .catch((error) => {
+            alert(`Login failed: ${error.message}`);
+        });
 });
 
-// Handle sign-up
-document.getElementById('signup-form').addEventListener('submit', (e) => {
+// Sign-up functionality
+const signupForm = document.getElementById('signup-form');
+signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = document.getElementById('signup-username').value;
     const password = document.getElementById('signup-password').value;
 
-    auth.createUserWithEmailAndPassword(username + '@cycloneworld.com', password)
+    auth.createUserWithEmailAndPassword(username + "@cycloneworld.com", password)
         .then(() => {
-            alert('Account created successfully!');
-            // Redirect to login or dashboard
+            alert("Sign-up successful! You can now log in.");
+            document.getElementById('signup-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
         })
-        .catch((error) => alert(`Error: ${error.message}`));
+        .catch((error) => {
+            alert(`Sign-up failed: ${error.message}`);
+        });
+});
+
+// Navigation between login and sign-up screens
+document.getElementById('go-to-signup').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('signup-screen').style.display = 'block';
+});
+
+document.getElementById('go-to-login').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('signup-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'block';
 });
