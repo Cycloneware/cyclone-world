@@ -18,12 +18,10 @@ const auth = firebase.auth();
 // Check if user is logged in
 auth.onAuthStateChanged((user) => {
     if (user) {
-        // Display username under avatar
-        const usernameDisplay = document.getElementById('username-display');
-        const username = user.email.split('@')[0]; // Extract username from email
-        usernameDisplay.textContent = username;
+        const usernameDisplay = user.email.split('@')[0];
+        console.log(`${usernameDisplay} has connected to the game.`);
 
-        console.log(`${username} has connected to the game.`);
+        startGame(usernameDisplay);
     } else {
         // Redirect to login if no user is logged in
         window.location.href = "index.html";
@@ -39,46 +37,81 @@ logoutButton.addEventListener('click', () => {
     });
 });
 
-// Avatar movement logic
-const avatarContainer = document.getElementById('user-avatar-container');
-const gameArea = document.getElementById('game-area');
+// Game logic
+function startGame(username) {
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
 
-// Initial position of the avatar
-let avatarPosition = {
-    x: gameArea.offsetWidth / 2 - avatarContainer.offsetWidth / 2,
-    y: gameArea.offsetHeight / 2 - avatarContainer.offsetHeight / 2
-};
+    const gameWidth = canvas.width;
+    const gameHeight = canvas.height;
 
-// Set the initial position
-avatarContainer.style.left = `${avatarPosition.x}px`;
-avatarContainer.style.top = `${avatarPosition.y}px`;
+    // Avatar settings
+    const avatar = {
+        x: gameWidth / 2,
+        y: gameHeight / 2,
+        radius: 25,
+        color: 'blue',
+        username: username
+    };
 
-// Handle arrow key movement
-document.addEventListener('keydown', (event) => {
-    const step = 10; // Movement speed
+    // Draw the avatar
+    function drawAvatar() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, gameWidth, gameHeight);
 
-    switch (event.key) {
-        case "ArrowUp":
-            avatarPosition.y = Math.max(0, avatarPosition.y - step);
-            break;
-        case "ArrowDown":
-            avatarPosition.y = Math.min(
-                gameArea.offsetHeight - avatarContainer.offsetHeight,
-                avatarPosition.y + step
-            );
-            break;
-        case "ArrowLeft":
-            avatarPosition.x = Math.max(0, avatarPosition.x - step);
-            break;
-        case "ArrowRight":
-            avatarPosition.x = Math.min(
-                gameArea.offsetWidth - avatarContainer.offsetWidth,
-                avatarPosition.x + step
-            );
-            break;
+        // Draw the circle
+        ctx.beginPath();
+        ctx.arc(avatar.x, avatar.y, avatar.radius, 0, Math.PI * 2);
+        ctx.fillStyle = avatar.color;
+        ctx.fill();
+        ctx.closePath();
+
+        // Draw the username
+        ctx.font = '16px Arial';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.fillText(avatar.username, avatar.x, avatar.y + avatar.radius + 20);
     }
 
     // Update avatar position
-    avatarContainer.style.left = `${avatarPosition.x}px`;
-    avatarContainer.style.top = `${avatarPosition.y}px`;
-});
+    function moveAvatar(direction) {
+        const step = 10;
+
+        switch (direction) {
+            case 'up':
+                if (avatar.y - avatar.radius - step >= 0) avatar.y -= step;
+                break;
+            case 'down':
+                if (avatar.y + avatar.radius + step <= gameHeight) avatar.y += step;
+                break;
+            case 'left':
+                if (avatar.x - avatar.radius - step >= 0) avatar.x -= step;
+                break;
+            case 'right':
+                if (avatar.x + avatar.radius + step <= gameWidth) avatar.x += step;
+                break;
+        }
+        drawAvatar();
+    }
+
+    // Listen for keyboard input
+    document.addEventListener('keydown', (event) => {
+        switch (event.key) {
+            case 'ArrowUp':
+                moveAvatar('up');
+                break;
+            case 'ArrowDown':
+                moveAvatar('down');
+                break;
+            case 'ArrowLeft':
+                moveAvatar('left');
+                break;
+            case 'ArrowRight':
+                moveAvatar('right');
+                break;
+        }
+    });
+
+    // Initial draw
+    drawAvatar();
+}
