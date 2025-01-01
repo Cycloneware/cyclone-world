@@ -1,39 +1,42 @@
-// Firebase configuration
+// Import Firebase App and Auth modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+// Your Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCiz-65LelRGFWdgl8hHVNb5zzvkY2CGDA",
     authDomain: "cyclone-world-e5120.firebaseapp.com",
     projectId: "cyclone-world-e5120",
-    storageBucket: "cyclone-world-e5120.firebaseapp.com",
+    storageBucket: "cyclone-world-e5120.firebasestorage.app",
     messagingSenderId: "671830912000",
     appId: "1:671830912000:web:2b2ad2a9f17746f9e5fce5",
     measurementId: "G-YPHXKY73MP"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-// Firebase Auth instance
-const auth = firebase.auth();
+// Get the Firebase Auth instance
+const auth = getAuth(app);
 
-// Check if user is logged in
-auth.onAuthStateChanged((user) => {
+// Listen for auth state changes
+onAuthStateChanged(auth, (user) => {
     if (user) {
-        const usernameDisplay = user.email.split('@')[0];
-        console.log(`${usernameDisplay} has connected to the game.`);
-
-        startGame(usernameDisplay);
+        console.log("User is signed in:", user.displayName);
+        // You can add logic here to handle the authenticated user, e.g., load the game
     } else {
-        // Redirect to login if no user is logged in
-        window.location.href = "index.html";
+        console.log("No user is signed in");
+        window.location.href = "index.html"; // Redirect to login if no user is signed in
     }
 });
 
 // Log out functionality
 const logoutButton = document.getElementById('logout-btn');
 logoutButton.addEventListener('click', () => {
-    auth.signOut().then(() => {
-        alert("You have logged out.");
-        window.location.href = "index.html";
+    signOut(auth).then(() => {
+        window.location.href = "index.html"; // Redirect to login page after logging out
+    }).catch((error) => {
+        console.error("Error logging out: ", error);
     });
 });
 
