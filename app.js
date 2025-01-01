@@ -3,12 +3,13 @@ const firebaseConfig = {
     apiKey: "AIzaSyCiz-65LelRGFWdgl8hHVNb5zzvkY2CGDA",
     authDomain: "cyclone-world-e5120.firebaseapp.com",
     projectId: "cyclone-world-e5120",
-    storageBucket: "cyclone-world-e5120.firebasestorage.app",
+    storageBucket: "cyclone-world-e5120.firebaseapp.com",
     messagingSenderId: "671830912000",
     appId: "1:671830912000:web:2b2ad2a9f17746f9e5fce5",
     measurementId: "G-YPHXKY73MP"
 };
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
