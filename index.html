@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyclone World Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Cyclone World</h1>
+    </header>
+
+    <main>
+        <!-- Login Screen -->
+        <div id="login-screen">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" placeholder="Enter your username" required>
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Enter your password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="go-to-signup">Sign up here</a></p>
+        </div>
+
+        <!-- Sign-Up Screen -->
+        <div id="signup-screen" style="display: none;">
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" placeholder="Choose a username" required>
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" placeholder="Choose a password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" id="go-to-login">Log in here</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cyclone World. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
