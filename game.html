@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyclone World - Game</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        #game-area {
+            width: 800px;
+            height: 600px;
+            border: 2px solid #000;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #user-avatar-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        #user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #username-display {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -19,9 +50,6 @@
                 <img src="avatar-placeholder.png" alt="User Avatar" id="user-avatar">
                 <p id="username-display">Loading...</p>
             </div>
-
-            <!-- Game content -->
-            <p>Welcome to the game area! Explore and interact with others.</p>
         </div>
     </main>
 
